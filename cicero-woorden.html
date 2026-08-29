@@ -2,166 +2,152 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cicero Woordenbattle – Klas 5 Latijn</title>
   <style>
-    :root {
-      --bg-dark: #0f172a;
-      --accent-gold: #f59e0b;
-      --accent-blue: #3b82f6;
-      --accent-green: #10b981;
-      --accent-red: #ef4444;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", -apple-system, system-ui, sans-serif; }
     body {
-      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
       padding: 20px;
-      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+      box-sizing: border-box;
     }
-    .quiz-container {
-      width: 100%;
-      max-width: 900px;
-      background: #1e293b;
+    .quiz-box {
+      background-color: #1e293b;
       border: 2px solid #334155;
-      border-radius: 24px;
-      padding: 40px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      max-width: 850px;
+      width: 100%;
+      padding: 30px;
       text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
     }
-    .header-tag {
+    .badge {
       display: inline-block;
-      background: var(--accent-gold);
+      background-color: #f59e0b;
       color: #0f172a;
       font-weight: 800;
       font-size: 14px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
       padding: 6px 16px;
       border-radius: 999px;
-      margin-bottom: 16px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
     }
     h1 {
-      font-size: 36px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 8px;
+      margin: 0 0 10px 0;
+      font-size: 34px;
+      color: #ffffff;
     }
-    .subtitle {
-      color: var(--text-muted);
+    p.sub {
+      color: #94a3b8;
       font-size: 18px;
-      margin-bottom: 24px;
+      margin: 0 0 25px 0;
     }
-    .stats-bar {
-      display: flex;
-      justify-content: space-between;
-      background: #0f172a;
-      padding: 14px 24px;
+    .card {
+      background-color: #0f172a;
       border-radius: 14px;
-      margin-bottom: 30px;
-      font-size: 18px;
-      font-weight: 600;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 17px;
+      line-height: 1.6;
       border: 1px solid #334155;
     }
-    .stat-item span { color: var(--accent-gold); }
-    .question-box {
-      background: #0f172a;
-      border: 2px solid var(--accent-gold);
-      border-radius: 18px;
-      padding: 30px 20px;
-      margin-bottom: 30px;
-      min-height: 140px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    .btn {
+      background-color: #3b82f6;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 16px 36px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 15px;
     }
-    .latin-word {
-      font-size: 42px;
+    .btn:hover {
+      background-color: #2563eb;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background-color: #0f172a;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: 1px solid #334155;
+    }
+    .stats span { color: #f59e0b; }
+    .word-box {
+      background-color: #0f172a;
+      border: 2px solid #f59e0b;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+    .word-target {
+      font-size: 40px;
       font-weight: 800;
       color: #fbbf24;
     }
-    .context-tag {
+    .word-context {
       font-size: 16px;
-      color: var(--text-muted);
-      margin-top: 6px;
+      color: #94a3b8;
+      margin-top: 8px;
       font-style: italic;
     }
-    .options-grid {
+    .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-    .btn-option {
-      background: #0f172a;
-      border: 2px solid #475569;
-      color: #fff;
-      font-size: 22px;
-      font-weight: 600;
-      padding: 20px 24px;
-      border-radius: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      line-height: 1.3;
-    }
-    .btn-option:hover:not(:disabled) {
-      background: #334155;
-      border-color: var(--accent-gold);
-    }
-    .btn-option.correct {
-      background: var(--accent-green) !important;
-      border-color: #059669 !important;
-      color: #fff !important;
-    }
-    .btn-option.wrong {
-      background: var(--accent-red) !important;
-      border-color: #dc2626 !important;
-      color: #fff !important;
-    }
-    .btn-main {
-      background: var(--accent-blue);
-      color: #fff;
-      font-size: 22px;
-      font-weight: 700;
-      padding: 18px 40px;
-      border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    }
-    .btn-main:hover {
-      background: #2563eb;
-    }
-    .feedback-message {
-      font-size: 22px;
-      font-weight: 700;
-      min-height: 36px;
+      gap: 15px;
       margin-bottom: 20px;
     }
-    .correct-text { color: var(--accent-green); }
-    .wrong-text { color: var(--accent-red); }
-    .progress-track {
+    .opt-btn {
+      background-color: #0f172a;
+      border: 2px solid #475569;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .opt-btn:hover:not(:disabled) {
+      background-color: #334155;
+      border-color: #f59e0b;
+    }
+    .correct-btn {
+      background-color: #10b981 !important;
+      border-color: #059669 !important;
+    }
+    .wrong-btn {
+      background-color: #ef4444 !important;
+      border-color: #dc2626 !important;
+    }
+    .feedback {
+      font-size: 20px;
+      font-weight: bold;
+      min-height: 30px;
+      margin: 15px 0;
+    }
+    .progress-bar-wrap {
       width: 100%;
-      height: 10px;
-      background: #0f172a;
+      height: 8px;
+      background-color: #0f172a;
       border-radius: 999px;
       overflow: hidden;
-      margin-top: 24px;
+      margin-top: 20px;
     }
-    .progress-fill {
+    .progress-bar-inner {
       height: 100%;
-      background: var(--accent-gold);
+      background-color: #f59e0b;
       width: 0%;
       transition: width 0.3s ease;
     }
@@ -169,199 +155,200 @@
 </head>
 <body>
 
-  <div class="quiz-container">
+  <div class="quiz-box">
     
-    <!-- START SCREEN -->
-    <div id="start-screen" style="display: block;">
-      <div class="header-tag">Klas 5 Gymnasium Latijn</div>
+    <!-- SCHERM 1: START -->
+    <div id="start-div">
+      <div class="badge">Klas 5 Gymnasium Latijn</div>
       <h1>🏛️ Cicero Woordenbattle</h1>
-      <p class="subtitle">Digibord Woordentraining – Exordium (§ 1–2 & § 5–6)</p>
+      <p class="sub">Digibord Woordentraining – Exordium (§ 1–2 & § 5–6)</p>
       
-      <div style="background: #0f172a; border-radius: 16px; padding: 24px; margin: 30px 0; border: 1px solid #334155; text-align: left; line-height: 1.6; font-size: 18px;">
-        <p style="margin-bottom: 10px;">🎯 <b>Instructie voor op het Digibord:</b></p>
-        <ul style="padding-left: 24px; color: #cbd5e1;">
+      <div class="card">
+        <p>🎯 <b>Instructie voor op het Digibord:</b></p>
+        <ul>
           <li>Speel klassikaal of in teams (bijv. linkerhelft vs. rechterhelft van het lokaal).</li>
           <li>Kies het juiste Nederlandse equivalent bij de Latijnse kernwoorden uit Cicero’s eerste redevoering tegen Catilina.</li>
           <li>Snel en foutloos antwoorden levert bonuspunten en streaks op!</li>
         </ul>
       </div>
 
-      <button type="button" class="btn-main" onclick="startBattle()">Start de Battle ➔</button>
+      <button id="main-start-btn" class="btn" type="button">Start de Battle ➔</button>
     </div>
 
-    <!-- GAME SCREEN -->
-    <div id="game-screen" style="display: none;">
-      <div class="stats-bar">
-        <div class="stat-item">Vraag: <span id="q-counter">1 / 15</span></div>
-        <div class="stat-item">Score: <span id="score-display">0</span></div>
-        <div class="stat-item">Streak: <span id="streak-display">🔥 0</span></div>
+    <!-- SCHERM 2: GAMEPLAY -->
+    <div id="game-div" style="display:none;">
+      <div class="stats">
+        <div>Vraag: <span id="lbl-q">1 / 15</span></div>
+        <div>Score: <span id="lbl-score">0</span></div>
+        <div>Streak: <span id="lbl-streak">🔥 0</span></div>
       </div>
 
-      <div class="question-box">
-        <div class="latin-word" id="latin-target">patientia</div>
-        <div class="context-tag" id="context-tag">§ 1, r. 1</div>
+      <div class="word-box">
+        <div class="word-target" id="lbl-word">patientia</div>
+        <div class="word-context" id="lbl-context">§ 1, r. 1</div>
       </div>
 
-      <div class="options-grid" id="options-container"></div>
+      <div class="grid" id="opt-grid"></div>
 
-      <div class="feedback-message" id="feedback"></div>
+      <div class="feedback" id="lbl-feedback"></div>
 
-      <button id="btn-continue" class="btn-main" style="display: none;" onclick="nextQuestion()">Volgende Woord ➔</button>
+      <button id="next-btn" class="btn" type="button" style="display:none;">Volgende Woord ➔</button>
 
-      <div class="progress-track">
-        <div id="progress-bar" class="progress-fill"></div>
+      <div class="progress-bar-wrap">
+        <div id="p-bar" class="progress-bar-inner"></div>
       </div>
     </div>
 
-    <!-- END SCREEN -->
-    <div id="end-screen" style="display: none;">
-      <div class="header-tag">Resultaat</div>
+    <!-- SCHERM 3: EINDRESULTAAT -->
+    <div id="end-div" style="display:none;">
+      <div class="badge">Resultaat</div>
       <h1>🏆 Battle Voltooid!</h1>
-      <p class="subtitle">Het Exordium-vocabulaire is scherp beheerst.</p>
+      <p class="sub">Het Exordium-vocabulaire is scherp beheerst.</p>
       
-      <div style="background: #0f172a; border-radius: 18px; padding: 30px; margin: 30px auto; max-width: 450px; border: 2px solid var(--accent-gold);">
-        <div style="font-size: 52px; font-weight: 800; color: var(--accent-gold);" id="final-score">0</div>
-        <div style="color: var(--text-muted); font-size: 18px; margin-top: 6px;">Totaal behaalde punten</div>
-        <div style="font-size: 22px; font-weight: 700; margin-top: 16px;" id="performance-text">Uitstekend!</div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size: 54px; font-weight: 800; color: #f59e0b;" id="lbl-final-score">0</div>
+        <div style="color: #94a3b8; font-size: 18px; margin-top: 5px;">Totaal behaalde punten</div>
+        <div style="font-size: 22px; font-weight: bold; margin-top: 15px; color: #ffffff;" id="lbl-eval">Uitstekend!</div>
       </div>
 
-      <button type="button" class="btn-main" onclick="startBattle()">Opnieuw Spelen 🔄</button>
+      <button id="restart-btn" class="btn" type="button">Opnieuw Spelen 🔄</button>
     </div>
 
   </div>
 
   <script>
-    var vocabData = [
-      { latin: "patientia", context: "§ 1, r. 1 (Quo usque tandem abutere...)", correct: "geduld", wrong: ["woede", "brutaliteit", "lijden"] },
-      { latin: "furor, furoris (m.)", context: "§ 1, r. 2 (furor iste tuus)", correct: "razernij / woede", wrong: ["dapperheid", "trots", "wapens"] },
-      { latin: "audacia", context: "§ 1, r. 2 (effrenata iactabit audacia)", correct: "overmoed / brutaliteit", wrong: ["angst", "voorzichtigheid", "eergevoel"] },
-      { latin: "praesidium", context: "§ 1, r. 3 (nocturnum praesidium)", correct: "bescherming / wachtpost", wrong: ["legerkamp", "overwinning", "vergadering"] },
-      { latin: "vigiliae (v. mv.)", context: "§ 1, r. 3 (urbis vigiliae)", correct: "nachtwachten", wrong: ["muren", "straten", "wapensmeden"] },
-      { latin: "timor, timoris (m.)", context: "§ 1, r. 3 (timor populi)", correct: "angst / vrees", wrong: ["blijdschap", "trots", "lawaai"] },
-      { latin: "concursus, -us (m.)", context: "§ 1, r. 4 (concursus bonorum)", correct: "samenloop / toeloop", wrong: ["vlucht", "uitverkoop", "vergissing"] },
-      { latin: "munitus (superlativus)", context: "§ 1, r. 4 (munitissimus locus)", correct: "zeer zwaar versterkt / bewaakt", wrong: ["zeer heilig", "zeer afgelegen", "zeer smal"] },
-      { latin: "coniuratio, -onis (v.)", context: "§ 1, r. 6 (coniurationem tuam)", correct: "samenzwering", wrong: ["overwinning", "redevoering", "vriendschap"] },
-      { latin: "arbitror, arbitrari", context: "§ 1, r. 8 (ignorare arbitraris)", correct: "menen / denken", wrong: ["eisen", "weigeren", "bevelen"] },
-      { latin: "mores (m. mv.)", context: "§ 2, r. 9 (O tempora, o mores!)", correct: "normen en waarden / zeden", wrong: ["doden", "wetten", "gebouwen"] },
-      { latin: "particeps (+ gen.)", context: "§ 2, r. 10 (publici consilii particeps)", correct: "deelgenoot (aan)", wrong: ["leider (van)", "tegenstander (van)", "verrader (van)"] },
-      { latin: "caedes, caedis (v.)", context: "§ 2, r. 11 (ad caedem)", correct: "moord / bloedbad", wrong: ["graf", "gevangenis", "verbanning"] },
-      { latin: "castra (o. mv.)", context: "§ 5, r. 15 (Castra sunt in Italia)", correct: "legerkamp", wrong: ["burcht", "schepen", "tenten"] },
-      { latin: "hostis, hostis (m.)", context: "§ 5, r. 16 (hostium numerus)", correct: "vijand (staatsvijand)", wrong: ["burger", "bondgenoot", "soldaat"] },
-      { latin: "moenia (o. mv.)", context: "§ 5, r. 17 (intra moenia)", correct: "stadsmuren", wrong: ["tempels", "paleizen", "poorten"] },
-      { latin: "pernicies, -ei (v.)", context: "§ 5, r. 18 (perniciem rei publicae)", correct: "ondergang / verderf", wrong: ["welvaart", "vrijheid", "geschiedenis"] }
+    var data = [
+      { w: "patientia", c: "§ 1, r. 1 (Quo usque tandem abutere...)", r: "geduld", f: ["woede", "brutaliteit", "lijden"] },
+      { w: "furor, furoris (m.)", c: "§ 1, r. 2 (furor iste tuus)", r: "razernij / woede", f: ["dapperheid", "trots", "wapens"] },
+      { w: "audacia", c: "§ 1, r. 2 (effrenata iactabit audacia)", r: "overmoed / brutaliteit", f: ["angst", "voorzichtigheid", "eergevoel"] },
+      { w: "praesidium", c: "§ 1, r. 3 (nocturnum praesidium)", r: "bescherming / wachtpost", f: ["legerkamp", "overwinning", "vergadering"] },
+      { w: "vigiliae (v. mv.)", c: "§ 1, r. 3 (urbis vigiliae)", r: "nachtwachten", f: ["muren", "straten", "wapensmeden"] },
+      { w: "timor, timoris (m.)", c: "§ 1, r. 3 (timor populi)", r: "angst / vrees", f: ["blijdschap", "trots", "lawaai"] },
+      { w: "concursus, -us (m.)", c: "§ 1, r. 4 (concursus bonorum)", r: "samenloop / toeloop", f: ["vlucht", "uitverkoop", "vergissing"] },
+      { w: "munitus (superlativus)", c: "§ 1, r. 4 (munitissimus locus)", r: "zeer zwaar versterkt / bewaakt", f: ["zeer heilig", "zeer afgelegen", "zeer smal"] },
+      { w: "coniuratio, -onis (v.)", c: "§ 1, r. 6 (coniurationem tuam)", r: "samenzwering", f: ["overwinning", "redevoering", "vriendschap"] },
+      { w: "arbitror, arbitrari", c: "§ 1, r. 8 (ignorare arbitraris)", r: "menen / denken", f: ["eisen", "weigeren", "bevelen"] },
+      { w: "mores (m. mv.)", c: "§ 2, r. 9 (O tempora, o mores!)", r: "normen en waarden / zeden", f: ["doden", "wetten", "gebouwen"] },
+      { w: "particeps (+ gen.)", c: "§ 2, r. 10 (publici consilii particeps)", r: "deelgenoot (aan)", f: ["leider (van)", "tegenstander (van)", "verrader (van)"] },
+      { w: "caedes, caedis (v.)", c: "§ 2, r. 11 (ad caedem)", r: "moord / bloedbad", f: ["graf", "gevangenis", "verbanning"] },
+      { w: "castra (o. mv.)", c: "§ 5, r. 15 (Castra sunt in Italia)", r: "legerkamp", f: ["burcht", "schepen", "tenten"] },
+      { w: "hostis, hostis (m.)", c: "§ 5, r. 16 (hostium numerus)", r: "vijand (staatsvijand)", f: ["burger", "bondgenoot", "soldaat"] },
+      { w: "moenia (o. mv.)", c: "§ 5, r. 17 (intra moenia)", r: "stadsmuren", f: ["tempels", "paleizen", "poorten"] },
+      { w: "pernicies, -ei (v.)", c: "§ 5, r. 18 (perniciem rei publicae)", r: "ondergang / verderf", f: ["welvaart", "vrijheid", "geschiedenis"] }
     ];
 
-    var currentQuestions = [];
-    var currentIndex = 0;
-    var score = 0;
-    var streak = 0;
+    var questions = [];
+    var curIdx = 0;
+    var totalScore = 0;
+    var curStreak = 0;
 
-    function shuffleArray(arr) {
-      var copy = arr.slice();
-      for (var i = copy.length - 1; i > 0; i--) {
+    function shuffle(arr) {
+      var c = arr.slice();
+      for (var i = c.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = temp;
+        var temp = c[i];
+        c[i] = c[j];
+        c[j] = temp;
       }
-      return copy;
+      return c;
     }
 
-    function startBattle() {
-      currentQuestions = shuffleArray(vocabData).slice(0, 15);
-      currentIndex = 0;
-      score = 0;
-      streak = 0;
+    function initGame() {
+      questions = shuffle(data).slice(0, 15);
+      curIdx = 0;
+      totalScore = 0;
+      curStreak = 0;
 
-      document.getElementById("start-screen").style.display = "none";
-      document.getElementById("end-screen").style.display = "none";
-      document.getElementById("game-screen").style.display = "block";
+      document.getElementById("start-div").style.display = "none";
+      document.getElementById("end-div").style.display = "none";
+      document.getElementById("game-div").style.display = "block";
 
-      showQuestion();
+      renderQuestion();
     }
 
-    function showQuestion() {
-      var q = currentQuestions[currentIndex];
-      document.getElementById("q-counter").innerText = (currentIndex + 1) + " / " + currentQuestions.length;
-      document.getElementById("score-display").innerText = score;
-      document.getElementById("streak-display").innerText = "🔥 " + streak;
-      document.getElementById("latin-target").innerText = q.latin;
-      document.getElementById("context-tag").innerText = q.context;
-      document.getElementById("feedback").innerText = "";
-      document.getElementById("btn-continue").style.display = "none";
+    function renderQuestion() {
+      var item = questions[curIdx];
+      document.getElementById("lbl-q").textContent = (curIdx + 1) + " / " + questions.length;
+      document.getElementById("lbl-score").textContent = totalScore;
+      document.getElementById("lbl-streak").textContent = "🔥 " + curStreak;
+      document.getElementById("lbl-word").textContent = item.w;
+      document.getElementById("lbl-context").textContent = item.c;
+      document.getElementById("lbl-feedback").textContent = "";
+      document.getElementById("next-btn").style.display = "none";
 
-      var percent = (currentIndex / currentQuestions.length) * 100;
-      document.getElementById("progress-bar").style.width = percent + "%";
+      var pct = (curIdx / questions.length) * 100;
+      document.getElementById("p-bar").style.width = pct + "%";
 
-      var container = document.getElementById("options-container");
-      container.innerHTML = "";
+      var grid = document.getElementById("opt-grid");
+      grid.innerHTML = "";
 
-      var options = shuffleArray([q.correct].concat(q.wrong));
-
+      var options = shuffle([item.r].concat(item.f));
       for (var i = 0; i < options.length; i++) {
-        (function(optText) {
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "btn-option";
-          btn.innerText = optText;
-          btn.onclick = function() {
-            handleAnswer(btn, optText, q.correct);
-          };
-          container.appendChild(btn);
-        })(options[i]);
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt-btn";
+        btn.textContent = options[i];
+        btn.setAttribute("data-ans", options[i]);
+        btn.onclick = function() {
+          onChoose(this, item.r);
+        };
+        grid.appendChild(btn);
       }
     }
 
-    function handleAnswer(selectedBtn, selectedText, correctText) {
-      var buttons = document.querySelectorAll(".btn-option");
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true;
+    function onChoose(btnElem, correctAns) {
+      var allBtns = document.querySelectorAll(".opt-btn");
+      for (var i = 0; i < allBtns.length; i++) {
+        allBtns[i].disabled = true;
       }
 
-      if (selectedText === correctText) {
-        selectedBtn.classList.add("correct");
-        streak++;
-        var points = 100 + (streak * 20);
-        score += points;
-        document.getElementById("feedback").innerHTML = "<span class="correct-text">✅ Uitstekend! +" + points + " pt</span>";
+      var chosen = btnElem.getAttribute("data-ans");
+      if (chosen === correctAns) {
+        btnElem.className = "opt-btn correct-btn";
+        curStreak++;
+        var pts = 100 + (curStreak * 20);
+        totalScore += pts;
+        document.getElementById("lbl-feedback").innerHTML = "<span style="color:#10b981;">✅ Uitstekend! +" + pts + " pt</span>";
       } else {
-        selectedBtn.classList.add("wrong");
-        streak = 0;
-        for (var j = 0; j < buttons.length; j++) {
-          if (buttons[j].innerText === correctText) {
-            buttons[j].classList.add("correct");
+        btnElem.className = "opt-btn wrong-btn";
+        curStreak = 0;
+        for (var j = 0; j < allBtns.length; j++) {
+          if (allBtns[j].getAttribute("data-ans") === correctAns) {
+            allBtns[j].className = "opt-btn correct-btn";
           }
         }
-        document.getElementById("feedback").innerHTML = "<span class="wrong-text">❌ Juiste betekenis: <b>" + correctText + "</b></span>";
+        document.getElementById("lbl-feedback").innerHTML = "<span style="color:#ef4444;">❌ Juist: <b>" + correctAns + "</b></span>";
       }
 
-      document.getElementById("score-display").innerText = score;
-      document.getElementById("streak-display").innerText = "🔥 " + streak;
-      document.getElementById("btn-continue").style.display = "inline-block";
+      document.getElementById("lbl-score").textContent = totalScore;
+      document.getElementById("lbl-streak").textContent = "🔥 " + curStreak;
+      document.getElementById("next-btn").style.display = "inline-block";
     }
 
-    function nextQuestion() {
-      currentIndex++;
-      if (currentIndex < currentQuestions.length) {
-        showQuestion();
+    function onNext() {
+      curIdx++;
+      if (curIdx < questions.length) {
+        renderQuestion();
       } else {
-        showEndScreen();
+        document.getElementById("p-bar").style.width = "100%";
+        document.getElementById("game-div").style.display = "none";
+        document.getElementById("end-div").style.display = "block";
+        document.getElementById("lbl-final-score").textContent = totalScore + " pt";
+
+        var msg = "Goed gewerkt!";
+        if (totalScore >= 2000) msg = "👑 Imperator / Consul-niveau! Foutloos!";
+        else if (totalScore >= 1400) msg = "🏛️ Senator-niveau! Zeer sterke woordkennis.";
+        else msg = "📖 Blijf de kernwoorden goed herhalen.";
+
+        document.getElementById("lbl-eval").textContent = msg;
       }
     }
 
-    function showEndScreen() {
-      document.getElementById("progress-bar").style.width = "100%";
-      document.getElementById("game-screen").style.display = "none";
-      document.getElementById("end-screen").style.display = "block";
-      document.getElementById("final-score").innerText = score + " pt";
-
-      var evalText = "Goed gewerkt!";
-      if (score >= 2000) evalText = "👑 Imperator / Consul-niveau! Foutloze beheersing!";
-      else if (score >= 1400) evalText = "🏛️ Senator-niveau! Zeer sterke woordkennis.";
-      else evalText = "📖 Blijf herhalen voor de toets.";
-
-      document.getElementById("performance-text").innerText = evalText;
-    }
+    window.onload = function() {
+      document.getElementById("main-start-btn").onclick = initGame;
+      document.getElementById("next-btn").onclick = onNext;
+      document.getElementById("restart-btn").onclick = initGame;
+    };
   </script>
 </body>
 </html>
