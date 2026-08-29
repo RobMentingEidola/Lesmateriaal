@@ -2,19 +2,21 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cicero Woordenbattle – Klas 5 Latijn</title>
   <style>
     body {
       background-color: #0f172a;
       color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 90vh;
+      min-height: 95vh;
       box-sizing: border-box;
+      user-select: none;
     }
     .quiz-box {
       background-color: #1e293b;
@@ -35,42 +37,17 @@
       padding: 6px 16px;
       border-radius: 999px;
       text-transform: uppercase;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
     h1 {
-      margin: 0 0 10px 0;
-      font-size: 34px;
+      margin: 0 0 6px 0;
+      font-size: 32px;
       color: #ffffff;
     }
     p.sub {
       color: #94a3b8;
-      font-size: 18px;
-      margin: 0 0 25px 0;
-    }
-    .card {
-      background-color: #0f172a;
-      border-radius: 14px;
-      padding: 20px;
-      margin: 20px 0;
-      text-align: left;
-      font-size: 17px;
-      line-height: 1.6;
-      border: 1px solid #334155;
-    }
-    .btn {
-      background-color: #3b82f6;
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 16px 36px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      display: inline-block;
-      margin-top: 15px;
-    }
-    .btn:hover {
-      background-color: #2563eb;
+      font-size: 16px;
+      margin: 0 0 20px 0;
     }
     .stats {
       display: flex;
@@ -78,7 +55,7 @@
       background-color: #0f172a;
       padding: 12px 20px;
       border-radius: 12px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       font-size: 18px;
       font-weight: bold;
       border: 1px solid #334155;
@@ -88,11 +65,11 @@
       background-color: #0f172a;
       border: 2px solid #f59e0b;
       border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 25px;
+      padding: 25px 15px;
+      margin-bottom: 20px;
     }
     .word-target {
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 800;
       color: #fbbf24;
     }
@@ -114,10 +91,11 @@
       color: #ffffff;
       font-size: 20px;
       font-weight: bold;
-      padding: 18px;
+      padding: 18px 12px;
       border-radius: 14px;
       cursor: pointer;
       text-align: center;
+      transition: background 0.1s;
     }
     .opt-btn:hover:not(:disabled) {
       background-color: #334155;
@@ -126,16 +104,32 @@
     .correct-btn {
       background-color: #10b981 !important;
       border-color: #059669 !important;
+      color: #ffffff !important;
     }
     .wrong-btn {
       background-color: #ef4444 !important;
       border-color: #dc2626 !important;
+      color: #ffffff !important;
     }
     .feedback {
       font-size: 20px;
       font-weight: bold;
       min-height: 30px;
-      margin: 15px 0;
+      margin: 10px 0;
+    }
+    .btn-next {
+      background-color: #3b82f6;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 14px 36px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-next:hover {
+      background-color: #2563eb;
     }
     .progress-bar-wrap {
       width: 100%;
@@ -156,27 +150,12 @@
 <body>
 
   <div class="quiz-box">
-    
-    <!-- SCHERM 1: START -->
-    <div id="start-div">
-      <div class="badge">Klas 5 Gymnasium Latijn</div>
-      <h1>🏛️ Cicero Woordenbattle</h1>
-      <p class="sub">Digibord Woordentraining – Exordium (§ 1–2 & § 5–6)</p>
-      
-      <div class="card">
-        <p>🎯 <b>Instructie voor op het Digibord:</b></p>
-        <ul>
-          <li>Speel klassikaal of in teams (bijv. linkerhelft vs. rechterhelft van het lokaal).</li>
-          <li>Kies het juiste Nederlandse equivalent bij de Latijnse kernwoorden uit Cicero’s eerste redevoering tegen Catilina.</li>
-          <li>Snel en foutloos antwoorden levert bonuspunten en streaks op!</li>
-        </ul>
-      </div>
+    <div class="badge">Klas 5 Gymnasium Latijn</div>
+    <h1>🏛️ Cicero Woordenbattle</h1>
+    <p class="sub">Exordium (§ 1–2 & § 5–6)</p>
 
-      <button id="main-start-btn" class="btn" type="button">Start de Battle ➔</button>
-    </div>
-
-    <!-- SCHERM 2: GAMEPLAY -->
-    <div id="game-div" style="display:none;">
+    <!-- DIRECT ACTIVE GAME -->
+    <div id="game-container">
       <div class="stats">
         <div>Vraag: <span id="lbl-q">1 / 15</span></div>
         <div>Score: <span id="lbl-score">0</span></div>
@@ -184,40 +163,33 @@
       </div>
 
       <div class="word-box">
-        <div class="word-target" id="lbl-word">patientia</div>
-        <div class="word-context" id="lbl-context">§ 1, r. 1</div>
+        <div class="word-target" id="lbl-word">...</div>
+        <div class="word-context" id="lbl-context">...</div>
       </div>
 
       <div class="grid" id="opt-grid"></div>
 
       <div class="feedback" id="lbl-feedback"></div>
 
-      <button id="next-btn" class="btn" type="button" style="display:none;">Volgende Woord ➔</button>
+      <button id="next-btn" class="btn-next" type="button" style="display:none;" onclick="goNext()">Volgende Woord ➔</button>
 
       <div class="progress-bar-wrap">
         <div id="p-bar" class="progress-bar-inner"></div>
       </div>
     </div>
 
-    <!-- SCHERM 3: EINDRESULTAAT -->
-    <div id="end-div" style="display:none;">
-      <div class="badge">Resultaat</div>
-      <h1>🏆 Battle Voltooid!</h1>
-      <p class="sub">Het Exordium-vocabulaire is scherp beheerst.</p>
-      
-      <div class="card" style="text-align:center;">
-        <div style="font-size: 54px; font-weight: 800; color: #f59e0b;" id="lbl-final-score">0</div>
-        <div style="color: #94a3b8; font-size: 18px; margin-top: 5px;">Totaal behaalde punten</div>
-        <div style="font-size: 22px; font-weight: bold; margin-top: 15px; color: #ffffff;" id="lbl-eval">Uitstekend!</div>
-      </div>
-
-      <button id="restart-btn" class="btn" type="button">Opnieuw Spelen 🔄</button>
+    <!-- RESULT SCREEN -->
+    <div id="end-container" style="display:none;">
+      <h2 style="font-size:32px; margin-top:20px;">🏆 Battle Voltooid!</h2>
+      <div style="font-size: 56px; font-weight: 800; color: #f59e0b; margin: 20px 0;" id="lbl-final-score">0</div>
+      <p style="font-size:22px; color:#94a3b8;" id="lbl-eval">Uitstekend!</p>
+      <button class="btn-next" type="button" onclick="restart()">Opnieuw Spelen 🔄</button>
     </div>
 
   </div>
 
   <script>
-    var data = [
+    var items = [
       { w: "patientia", c: "§ 1, r. 1 (Quo usque tandem abutere...)", r: "geduld", f: ["woede", "brutaliteit", "lijden"] },
       { w: "furor, furoris (m.)", c: "§ 1, r. 2 (furor iste tuus)", r: "razernij / woede", f: ["dapperheid", "trots", "wapens"] },
       { w: "audacia", c: "§ 1, r. 2 (effrenata iactabit audacia)", r: "overmoed / brutaliteit", f: ["angst", "voorzichtigheid", "eergevoel"] },
@@ -237,118 +209,99 @@
       { w: "pernicies, -ei (v.)", c: "§ 5, r. 18 (perniciem rei publicae)", r: "ondergang / verderf", f: ["welvaart", "vrijheid", "geschiedenis"] }
     ];
 
-    var questions = [];
-    var curIdx = 0;
-    var totalScore = 0;
-    var curStreak = 0;
+    var deck = [];
+    var cur = 0;
+    var score = 0;
+    var streak = 0;
 
-    function shuffle(arr) {
-      var c = arr.slice();
-      for (var i = c.length - 1; i > 0; i--) {
+    function shuffle(a) {
+      var arr = a.slice();
+      for (var i = arr.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = c[i];
-        c[i] = c[j];
-        c[j] = temp;
+        var temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
       }
-      return c;
+      return arr;
     }
 
-    function initGame() {
-      questions = shuffle(data).slice(0, 15);
-      curIdx = 0;
-      totalScore = 0;
-      curStreak = 0;
-
-      document.getElementById("start-div").style.display = "none";
-      document.getElementById("end-div").style.display = "none";
-      document.getElementById("game-div").style.display = "block";
-
-      renderQuestion();
+    function start() {
+      deck = shuffle(items).slice(0, 15);
+      cur = 0;
+      score = 0;
+      streak = 0;
+      document.getElementById("game-container").style.display = "block";
+      document.getElementById("end-container").style.display = "none";
+      loadQuestion();
     }
 
-    function renderQuestion() {
-      var item = questions[curIdx];
-      document.getElementById("lbl-q").textContent = (curIdx + 1) + " / " + questions.length;
-      document.getElementById("lbl-score").textContent = totalScore;
-      document.getElementById("lbl-streak").textContent = "🔥 " + curStreak;
-      document.getElementById("lbl-word").textContent = item.w;
-      document.getElementById("lbl-context").textContent = item.c;
+    function loadQuestion() {
+      var q = deck[cur];
+      document.getElementById("lbl-q").textContent = (cur + 1) + " / " + deck.length;
+      document.getElementById("lbl-score").textContent = score;
+      document.getElementById("lbl-streak").textContent = "🔥 " + streak;
+      document.getElementById("lbl-word").textContent = q.w;
+      document.getElementById("lbl-context").textContent = q.c;
       document.getElementById("lbl-feedback").textContent = "";
       document.getElementById("next-btn").style.display = "none";
-
-      var pct = (curIdx / questions.length) * 100;
-      document.getElementById("p-bar").style.width = pct + "%";
+      document.getElementById("p-bar").style.width = ((cur / deck.length) * 100) + "%";
 
       var grid = document.getElementById("opt-grid");
       grid.innerHTML = "";
 
-      var options = shuffle([item.r].concat(item.f));
-      for (var i = 0; i < options.length; i++) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "opt-btn";
-        btn.textContent = options[i];
-        btn.setAttribute("data-ans", options[i]);
-        btn.onclick = function() {
-          onChoose(this, item.r);
-        };
-        grid.appendChild(btn);
-      }
-    }
+      var opts = shuffle([q.r].concat(q.f));
+      for (var i = 0; i < opts.length; i++) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "opt-btn";
+        b.textContent = opts[i];
+        b.setAttribute("data-val", opts[i]);
+        b.onclick = function() {
+          var chosen = this.getAttribute("data-val");
+          var all = document.querySelectorAll(".opt-btn");
+          for (var k = 0; k < all.length; k++) all[k].disabled = true;
 
-    function onChoose(btnElem, correctAns) {
-      var allBtns = document.querySelectorAll(".opt-btn");
-      for (var i = 0; i < allBtns.length; i++) {
-        allBtns[i].disabled = true;
-      }
-
-      var chosen = btnElem.getAttribute("data-ans");
-      if (chosen === correctAns) {
-        btnElem.className = "opt-btn correct-btn";
-        curStreak++;
-        var pts = 100 + (curStreak * 20);
-        totalScore += pts;
-        document.getElementById("lbl-feedback").innerHTML = "<span style="color:#10b981;">✅ Uitstekend! +" + pts + " pt</span>";
-      } else {
-        btnElem.className = "opt-btn wrong-btn";
-        curStreak = 0;
-        for (var j = 0; j < allBtns.length; j++) {
-          if (allBtns[j].getAttribute("data-ans") === correctAns) {
-            allBtns[j].className = "opt-btn correct-btn";
+          if (chosen === q.r) {
+            this.className = "opt-btn correct-btn";
+            streak++;
+            var pts = 100 + (streak * 20);
+            score += pts;
+            document.getElementById("lbl-feedback").innerHTML = "<span style="color:#10b981;">✅ Uitstekend! +" + pts + " pt</span>";
+          } else {
+            this.className = "opt-btn wrong-btn";
+            streak = 0;
+            for (var m = 0; m < all.length; m++) {
+              if (all[m].getAttribute("data-val") === q.r) all[m].className = "opt-btn correct-btn";
+            }
+            document.getElementById("lbl-feedback").innerHTML = "<span style="color:#ef4444;">❌ Juist: <b>" + q.r + "</b></span>";
           }
-        }
-        document.getElementById("lbl-feedback").innerHTML = "<span style="color:#ef4444;">❌ Juist: <b>" + correctAns + "</b></span>";
+          document.getElementById("lbl-score").textContent = score;
+          document.getElementById("lbl-streak").textContent = "🔥 " + streak;
+          document.getElementById("next-btn").style.display = "inline-block";
+        };
+        grid.appendChild(b);
       }
-
-      document.getElementById("lbl-score").textContent = totalScore;
-      document.getElementById("lbl-streak").textContent = "🔥 " + curStreak;
-      document.getElementById("next-btn").style.display = "inline-block";
     }
 
-    function onNext() {
-      curIdx++;
-      if (curIdx < questions.length) {
-        renderQuestion();
+    function goNext() {
+      cur++;
+      if (cur < deck.length) {
+        loadQuestion();
       } else {
         document.getElementById("p-bar").style.width = "100%";
-        document.getElementById("game-div").style.display = "none";
-        document.getElementById("end-div").style.display = "block";
-        document.getElementById("lbl-final-score").textContent = totalScore + " pt";
-
-        var msg = "Goed gewerkt!";
-        if (totalScore >= 2000) msg = "👑 Imperator / Consul-niveau! Foutloos!";
-        else if (totalScore >= 1400) msg = "🏛️ Senator-niveau! Zeer sterke woordkennis.";
-        else msg = "📖 Blijf de kernwoorden goed herhalen.";
-
-        document.getElementById("lbl-eval").textContent = msg;
+        document.getElementById("game-container").style.display = "none";
+        document.getElementById("end-container").style.display = "block";
+        document.getElementById("lbl-final-score").textContent = score + " pt";
+        document.getElementById("lbl-eval").textContent = score >= 2000 ? "👑 Imperator / Consul-niveau! Foutloos!" : (score >= 1400 ? "🏛️ Senator-niveau! Zeer sterk." : "📖 Goed geoefend!");
       }
     }
 
-    window.onload = function() {
-      document.getElementById("main-start-btn").onclick = initGame;
-      document.getElementById("next-btn").onclick = onNext;
-      document.getElementById("restart-btn").onclick = initGame;
-    };
+    function restart() {
+      start();
+    }
+
+    // DIRECT AUTO-START OP LOAD
+    start();
   </script>
 </body>
 </html>
