@@ -39,16 +39,8 @@
       text-transform: uppercase;
       margin-bottom: 12px;
     }
-    h1 {
-      margin: 0 0 6px 0;
-      font-size: 32px;
-      color: #ffffff;
-    }
-    p.sub {
-      color: #94a3b8;
-      font-size: 16px;
-      margin: 0 0 20px 0;
-    }
+    h1 { margin: 0 0 6px 0; font-size: 32px; color: #ffffff; }
+    p.sub { color: #94a3b8; font-size: 16px; margin: 0 0 20px 0; }
     .stats {
       display: flex;
       justify-content: space-between;
@@ -68,17 +60,8 @@
       padding: 25px 15px;
       margin-bottom: 20px;
     }
-    .word-target {
-      font-size: 42px;
-      font-weight: 800;
-      color: #fbbf24;
-    }
-    .word-context {
-      font-size: 16px;
-      color: #94a3b8;
-      margin-top: 8px;
-      font-style: italic;
-    }
+    .word-target { font-size: 42px; font-weight: 800; color: #fbbf24; }
+    .word-context { font-size: 16px; color: #94a3b8; margin-top: 8px; font-style: italic; }
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -95,28 +78,8 @@
       border-radius: 14px;
       cursor: pointer;
       text-align: center;
-      transition: background 0.1s;
     }
-    .opt-btn:hover:not(:disabled) {
-      background-color: #334155;
-      border-color: #f59e0b;
-    }
-    .correct-btn {
-      background-color: #10b981 !important;
-      border-color: #059669 !important;
-      color: #ffffff !important;
-    }
-    .wrong-btn {
-      background-color: #ef4444 !important;
-      border-color: #dc2626 !important;
-      color: #ffffff !important;
-    }
-    .feedback {
-      font-size: 20px;
-      font-weight: bold;
-      min-height: 30px;
-      margin: 10px 0;
-    }
+    .opt-btn:hover:not(:disabled) { background-color: #334155; border-color: #f59e0b; }
     .btn-next {
       background-color: #3b82f6;
       color: #ffffff;
@@ -128,9 +91,8 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    .btn-next:hover {
-      background-color: #2563eb;
-    }
+    .btn-next:hover { background-color: #2563eb; }
+    .feedback { font-size: 20px; font-weight: bold; min-height: 30px; margin: 10px 0; }
     .progress-bar-wrap {
       width: 100%;
       height: 8px;
@@ -139,12 +101,7 @@
       overflow: hidden;
       margin-top: 20px;
     }
-    .progress-bar-inner {
-      height: 100%;
-      background-color: #f59e0b;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    .progress-bar-inner { height: 100%; background-color: #f59e0b; width: 0%; transition: width 0.3s; }
   </style>
 </head>
 <body>
@@ -154,154 +111,167 @@
     <h1>🏛️ Cicero Woordenbattle</h1>
     <p class="sub">Exordium (§ 1–2 & § 5–6)</p>
 
-    <!-- DIRECT ACTIVE GAME -->
-    <div id="game-container">
+    <!-- ACTIVE QUIZ CONTAINER -->
+    <div id="quiz-panel">
       <div class="stats">
-        <div>Vraag: <span id="lbl-q">1 / 15</span></div>
-        <div>Score: <span id="lbl-score">0</span></div>
-        <div>Streak: <span id="lbl-streak">🔥 0</span></div>
+        <div>Vraag: <span id="v-teller">1 / 15</span></div>
+        <div>Score: <span id="v-score">0</span></div>
+        <div>Streak: <span id="v-streak">🔥 0</span></div>
       </div>
 
       <div class="word-box">
-        <div class="word-target" id="lbl-word">...</div>
-        <div class="word-context" id="lbl-context">...</div>
+        <div class="word-target" id="v-woord">patientia</div>
+        <div class="word-context" id="v-context">§ 1, r. 1 (Quo usque tandem abutere...)</div>
       </div>
 
-      <div class="grid" id="opt-grid"></div>
+      <div class="grid">
+        <button type="button" class="opt-btn" id="btn-0" onclick="kies(0)">Optie A</button>
+        <button type="button" class="opt-btn" id="btn-1" onclick="kies(1)">Optie B</button>
+        <button type="button" class="opt-btn" id="btn-2" onclick="kies(2)">Optie C</button>
+        <button type="button" class="opt-btn" id="btn-3" onclick="kies(3)">Optie D</button>
+      </div>
 
-      <div class="feedback" id="lbl-feedback"></div>
+      <div class="feedback" id="v-feedback"></div>
 
-      <button id="next-btn" class="btn-next" type="button" style="display:none;" onclick="goNext()">Volgende Woord ➔</button>
+      <button id="btn-volgende" class="btn-next" type="button" style="display:none;" onclick="volgende()">Volgende Woord ➔</button>
 
       <div class="progress-bar-wrap">
-        <div id="p-bar" class="progress-bar-inner"></div>
+        <div id="v-progress" class="progress-bar-inner"></div>
       </div>
     </div>
 
-    <!-- RESULT SCREEN -->
-    <div id="end-container" style="display:none;">
+    <!-- RESULT PANEL -->
+    <div id="result-panel" style="display:none;">
       <h2 style="font-size:32px; margin-top:20px;">🏆 Battle Voltooid!</h2>
-      <div style="font-size: 56px; font-weight: 800; color: #f59e0b; margin: 20px 0;" id="lbl-final-score">0</div>
-      <p style="font-size:22px; color:#94a3b8;" id="lbl-eval">Uitstekend!</p>
-      <button class="btn-next" type="button" onclick="restart()">Opnieuw Spelen 🔄</button>
+      <div style="font-size: 56px; font-weight: 800; color: #f59e0b; margin: 20px 0;" id="v-eindscore">0 pt</div>
+      <p style="font-size:22px; color:#94a3b8;" id="v-eindoordeel">Uitstekend!</p>
+      <button class="btn-next" type="button" onclick="startSpel()">Opnieuw Spelen 🔄</button>
     </div>
 
   </div>
 
   <script>
-    var items = [
-      { w: "patientia", c: "§ 1, r. 1 (Quo usque tandem abutere...)", r: "geduld", f: ["woede", "brutaliteit", "lijden"] },
-      { w: "furor, furoris (m.)", c: "§ 1, r. 2 (furor iste tuus)", r: "razernij / woede", f: ["dapperheid", "trots", "wapens"] },
-      { w: "audacia", c: "§ 1, r. 2 (effrenata iactabit audacia)", r: "overmoed / brutaliteit", f: ["angst", "voorzichtigheid", "eergevoel"] },
-      { w: "praesidium", c: "§ 1, r. 3 (nocturnum praesidium)", r: "bescherming / wachtpost", f: ["legerkamp", "overwinning", "vergadering"] },
-      { w: "vigiliae (v. mv.)", c: "§ 1, r. 3 (urbis vigiliae)", r: "nachtwachten", f: ["muren", "straten", "wapensmeden"] },
-      { w: "timor, timoris (m.)", c: "§ 1, r. 3 (timor populi)", r: "angst / vrees", f: ["blijdschap", "trots", "lawaai"] },
-      { w: "concursus, -us (m.)", c: "§ 1, r. 4 (concursus bonorum)", r: "samenloop / toeloop", f: ["vlucht", "uitverkoop", "vergissing"] },
-      { w: "munitus (superlativus)", c: "§ 1, r. 4 (munitissimus locus)", r: "zeer zwaar versterkt / bewaakt", f: ["zeer heilig", "zeer afgelegen", "zeer smal"] },
-      { w: "coniuratio, -onis (v.)", c: "§ 1, r. 6 (coniurationem tuam)", r: "samenzwering", f: ["overwinning", "redevoering", "vriendschap"] },
-      { w: "arbitror, arbitrari", c: "§ 1, r. 8 (ignorare arbitraris)", r: "menen / denken", f: ["eisen", "weigeren", "bevelen"] },
-      { w: "mores (m. mv.)", c: "§ 2, r. 9 (O tempora, o mores!)", r: "normen en waarden / zeden", f: ["doden", "wetten", "gebouwen"] },
-      { w: "particeps (+ gen.)", c: "§ 2, r. 10 (publici consilii particeps)", r: "deelgenoot (aan)", f: ["leider (van)", "tegenstander (van)", "verrader (van)"] },
-      { w: "caedes, caedis (v.)", c: "§ 2, r. 11 (ad caedem)", r: "moord / bloedbad", f: ["graf", "gevangenis", "verbanning"] },
-      { w: "castra (o. mv.)", c: "§ 5, r. 15 (Castra sunt in Italia)", r: "legerkamp", f: ["burcht", "schepen", "tenten"] },
-      { w: "hostis, hostis (m.)", c: "§ 5, r. 16 (hostium numerus)", r: "vijand (staatsvijand)", f: ["burger", "bondgenoot", "soldaat"] },
-      { w: "moenia (o. mv.)", c: "§ 5, r. 17 (intra moenia)", r: "stadsmuren", f: ["tempels", "paleizen", "poorten"] },
-      { w: "pernicies, -ei (v.)", c: "§ 5, r. 18 (perniciem rei publicae)", r: "ondergang / verderf", f: ["welvaart", "vrijheid", "geschiedenis"] }
+    var woordenlijst = [
+      { w: "patientia", c: "§ 1, r. 1 (Quo usque tandem abutere...)", goed: "geduld", fout: ["woede", "brutaliteit", "lijden"] },
+      { w: "furor, furoris (m.)", c: "§ 1, r. 2 (furor iste tuus)", goed: "razernij / woede", fout: ["dapperheid", "trots", "wapens"] },
+      { w: "audacia", c: "§ 1, r. 2 (effrenata iactabit audacia)", goed: "overmoed / brutaliteit", fout: ["angst", "voorzichtigheid", "eergevoel"] },
+      { w: "praesidium", c: "§ 1, r. 3 (nocturnum praesidium)", goed: "bescherming / wachtpost", fout: ["legerkamp", "overwinning", "vergadering"] },
+      { w: "vigiliae (v. mv.)", c: "§ 1, r. 3 (urbis vigiliae)", goed: "nachtwachten", fout: ["muren", "straten", "wapensmeden"] },
+      { w: "timor, timoris (m.)", c: "§ 1, r. 3 (timor populi)", goed: "angst / vrees", fout: ["blijdschap", "trots", "lawaai"] },
+      { w: "concursus, -us (m.)", c: "§ 1, r. 4 (concursus bonorum)", goed: "samenloop / toeloop", fout: ["vlucht", "uitverkoop", "vergissing"] },
+      { w: "munitus (superlativus)", c: "§ 1, r. 4 (munitissimus locus)", goed: "zeer zwaar versterkt / bewaakt", fout: ["zeer heilig", "zeer afgelegen", "zeer smal"] },
+      { w: "coniuratio, -onis (v.)", c: "§ 1, r. 6 (coniurationem tuam)", goed: "samenzwering", fout: ["overwinning", "redevoering", "vriendschap"] },
+      { w: "arbitror, arbitrari", c: "§ 1, r. 8 (ignorare arbitraris)", goed: "menen / denken", fout: ["eisen", "weigeren", "bevelen"] },
+      { w: "mores (m. mv.)", c: "§ 2, r. 9 (O tempora, o mores!)", goed: "normen en waarden / zeden", fout: ["doden", "wetten", "gebouwen"] },
+      { w: "particeps (+ gen.)", c: "§ 2, r. 10 (publici consilii particeps)", goed: "deelgenoot (aan)", fout: ["leider (van)", "tegenstander (van)", "verrader (van)"] },
+      { w: "caedes, caedis (v.)", c: "§ 2, r. 11 (ad caedem)", goed: "moord / bloedbad", fout: ["graf", "gevangenis", "verbanning"] },
+      { w: "castra (o. mv.)", c: "§ 5, r. 15 (Castra sunt in Italia)", goed: "legerkamp", fout: ["burcht", "schepen", "tenten"] },
+      { w: "hostis, hostis (m.)", c: "§ 5, r. 16 (hostium numerus)", goed: "vijand (staatsvijand)", fout: ["burger", "bondgenoot", "soldaat"] },
+      { w: "moenia (o. mv.)", c: "§ 5, r. 17 (intra moenia)", goed: "stadsmuren", fout: ["tempels", "paleizen", "poorten"] },
+      { w: "pernicies, -ei (v.)", c: "§ 5, r. 18 (perniciem rei publicae)", goed: "ondergang / verderf", fout: ["welvaart", "vrijheid", "geschiedenis"] }
     ];
 
-    var deck = [];
-    var cur = 0;
-    var score = 0;
+    var speelronde = [];
+    var vraagIndex = 0;
+    var punten = 0;
     var streak = 0;
+    var optiesNu = [];
+    var huidigGoed = "";
 
-    function shuffle(a) {
-      var arr = a.slice();
-      for (var i = arr.length - 1; i > 0; i--) {
+    function mixArray(arr) {
+      var k = arr.slice();
+      for (var i = k.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+        var tmp = k[i];
+        k[i] = k[j];
+        k[j] = tmp;
       }
-      return arr;
+      return k;
     }
 
-    function start() {
-      deck = shuffle(items).slice(0, 15);
-      cur = 0;
-      score = 0;
-      streak = 0;
-      document.getElementById("game-container").style.display = "block";
-      document.getElementById("end-container").style.display = "none";
-      loadQuestion();
-    }
+    function toonVraag() {
+      var item = speelronde[vraagIndex];
+      huidigGoed = item.goed;
+      
+      document.getElementById("v-teller").innerText = (vraagIndex + 1) + " / " + speelronde.length;
+      document.getElementById("v-score").innerText = punten;
+      document.getElementById("v-streak").innerText = "🔥 " + streak;
+      document.getElementById("v-woord").innerText = item.w;
+      document.getElementById("v-context").innerText = item.c;
+      document.getElementById("v-feedback").innerText = "";
+      document.getElementById("btn-volgende").style.display = "none";
+      document.getElementById("v-progress").style.width = ((vraagIndex / speelronde.length) * 100) + "%";
 
-    function loadQuestion() {
-      var q = deck[cur];
-      document.getElementById("lbl-q").textContent = (cur + 1) + " / " + deck.length;
-      document.getElementById("lbl-score").textContent = score;
-      document.getElementById("lbl-streak").textContent = "🔥 " + streak;
-      document.getElementById("lbl-word").textContent = q.w;
-      document.getElementById("lbl-context").textContent = q.c;
-      document.getElementById("lbl-feedback").textContent = "";
-      document.getElementById("next-btn").style.display = "none";
-      document.getElementById("p-bar").style.width = ((cur / deck.length) * 100) + "%";
-
-      var grid = document.getElementById("opt-grid");
-      grid.innerHTML = "";
-
-      var opts = shuffle([q.r].concat(q.f));
-      for (var i = 0; i < opts.length; i++) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "opt-btn";
-        b.textContent = opts[i];
-        b.setAttribute("data-val", opts[i]);
-        b.onclick = function() {
-          var chosen = this.getAttribute("data-val");
-          var all = document.querySelectorAll(".opt-btn");
-          for (var k = 0; k < all.length; k++) all[k].disabled = true;
-
-          if (chosen === q.r) {
-            this.className = "opt-btn correct-btn";
-            streak++;
-            var pts = 100 + (streak * 20);
-            score += pts;
-            document.getElementById("lbl-feedback").innerHTML = "<span style="color:#10b981;">✅ Uitstekend! +" + pts + " pt</span>";
-          } else {
-            this.className = "opt-btn wrong-btn";
-            streak = 0;
-            for (var m = 0; m < all.length; m++) {
-              if (all[m].getAttribute("data-val") === q.r) all[m].className = "opt-btn correct-btn";
-            }
-            document.getElementById("lbl-feedback").innerHTML = "<span style="color:#ef4444;">❌ Juist: <b>" + q.r + "</b></span>";
-          }
-          document.getElementById("lbl-score").textContent = score;
-          document.getElementById("lbl-streak").textContent = "🔥 " + streak;
-          document.getElementById("next-btn").style.display = "inline-block";
-        };
-        grid.appendChild(b);
+      optiesNu = mixArray([item.goed].concat(item.fout));
+      
+      for (var i = 0; i < 4; i++) {
+        var b = document.getElementById("btn-" + i);
+        b.innerText = optiesNu[i];
+        b.disabled = false;
+        b.style.backgroundColor = "#0f172a";
+        b.style.borderColor = "#475569";
+        b.style.color = "#ffffff";
       }
     }
 
-    function goNext() {
-      cur++;
-      if (cur < deck.length) {
-        loadQuestion();
+    function kies(keuzeIndex) {
+      for (var i = 0; i < 4; i++) {
+        document.getElementById("btn-" + i).disabled = true;
+      }
+
+      var gekozen = optiesNu[keuzeIndex];
+      var gekozenKnop = document.getElementById("btn-" + keuzeIndex);
+
+      if (gekozen === huidigGoed) {
+        gekozenKnop.style.backgroundColor = "#10b981";
+        gekozenKnop.style.borderColor = "#059669";
+        streak++;
+        var plus = 100 + (streak * 20);
+        punten += plus;
+        document.getElementById("v-feedback").innerHTML = "<span style="color:#10b981;">✅ Uitstekend! +" + plus + " pt</span>";
       } else {
-        document.getElementById("p-bar").style.width = "100%";
-        document.getElementById("game-container").style.display = "none";
-        document.getElementById("end-container").style.display = "block";
-        document.getElementById("lbl-final-score").textContent = score + " pt";
-        document.getElementById("lbl-eval").textContent = score >= 2000 ? "👑 Imperator / Consul-niveau! Foutloos!" : (score >= 1400 ? "🏛️ Senator-niveau! Zeer sterk." : "📖 Goed geoefend!");
+        gekozenKnop.style.backgroundColor = "#ef4444";
+        gekozenKnop.style.borderColor = "#dc2626";
+        streak = 0;
+        for (var j = 0; j < 4; j++) {
+          if (optiesNu[j] === huidigGoed) {
+            document.getElementById("btn-" + j).style.backgroundColor = "#10b981";
+            document.getElementById("btn-" + j).style.borderColor = "#059669";
+          }
+        }
+        document.getElementById("v-feedback").innerHTML = "<span style="color:#ef4444;">❌ Juist: <b>" + huidigGoed + "</b></span>";
+      }
+
+      document.getElementById("v-score").innerText = punten;
+      document.getElementById("v-streak").innerText = "🔥 " + streak;
+      document.getElementById("btn-volgende").style.display = "inline-block";
+    }
+
+    function volgende() {
+      vraagIndex++;
+      if (vraagIndex < speelronde.length) {
+        toonVraag();
+      } else {
+        document.getElementById("v-progress").style.width = "100%";
+        document.getElementById("quiz-panel").style.display = "none";
+        document.getElementById("result-panel").style.display = "block";
+        document.getElementById("v-eindscore").innerText = punten + " pt";
+        document.getElementById("v-eindoordeel").innerText = punten >= 2000 ? "👑 Imperator / Consul-niveau! Foutloos!" : (punten >= 1400 ? "🏛️ Senator-niveau! Zeer sterke beheersing." : "📖 Goed geoefend, blijf herhalen!");
       }
     }
 
-    function restart() {
-      start();
+    function startSpel() {
+      speelronde = mixArray(woordenlijst).slice(0, 15);
+      vraagIndex = 0;
+      punten = 0;
+      streak = 0;
+      document.getElementById("quiz-panel").style.display = "block";
+      document.getElementById("result-panel").style.display = "none";
+      toonVraag();
     }
 
-    // DIRECT AUTO-START OP LOAD
-    start();
+    // Direct aanroepen
+    startSpel();
   </script>
 </body>
 </html>
