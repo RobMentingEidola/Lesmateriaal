@@ -30,9 +30,8 @@
     .quiz-container {
       width: 100%;
       max-width: 950px;
-      background: rgba(30, 41, 59, 0.85);
+      background: rgba(30, 41, 59, 0.95);
       border: 2px solid #334155;
-      backdrop-filter: blur(12px);
       border-radius: 24px;
       padding: 40px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
@@ -114,7 +113,7 @@
       padding: 20px 24px;
       border-radius: 16px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -200,7 +199,7 @@
         </ul>
       </div>
 
-      <button class="btn-start" onclick="startGame()">Start de Battle ➔</button>
+      <button id="start-btn" class="btn-start">Start de Battle ➔</button>
     </div>
 
     <!-- GAME SCREEN -->
@@ -220,7 +219,7 @@
 
       <div class="feedback-message" id="feedback"></div>
 
-      <button id="btn-continue" class="btn-next" style="display: none;" onclick="nextQuestion()">Volgende Woord ➔</button>
+      <button id="btn-continue" class="btn-next" style="display: none;">Volgende Woord ➔</button>
 
       <div class="progress-track">
         <div id="progress-bar" class="progress-fill"></div>
@@ -239,30 +238,12 @@
         <div style="font-size: 20px; font-weight: 700; margin-top: 16px;" id="performance-text">Uitstekend!</div>
       </div>
 
-      <button class="btn-start" onclick="startGame()">Opnieuw Spelen 🔄</button>
+      <button id="restart-btn" class="btn-start">Opnieuw Spelen 🔄</button>
     </div>
 
   </div>
 
   <script>
-    // Audio Context for Digibord feedback sound effects
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq, type, duration) {
-      if (!audioCtx) return;
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {}
-    }
-
     const vocabData = [
       { latin: "patientia", context: "§ 1, r. 1 (Quo usque tandem abutere...)", correct: "geduld", wrong: ["woede", "brutaliteit", "lijden"] },
       { latin: "furor, furoris (m.)", context: "§ 1, r. 2 (furor iste tuus)", correct: "razernij / woede", wrong: ["dapperheid", "trots", "wapens"] },
@@ -288,15 +269,30 @@
     let score = 0;
     let streak = 0;
 
+    function playBeep(freq, type, duration) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {}
+    }
+
     function shuffle(array) {
-      return array.sort(() => Math.random() - 0.5);
+      return array.slice().sort(() => Math.random() - 0.5);
     }
 
     function startGame() {
-      if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-      }
-      currentQuestions = shuffle([...vocabData]).slice(0, 15);
+      currentQuestions = shuffle(vocabData).slice(0, 15);
       currentIndex = 0;
       score = 0;
       streak = 0;
@@ -317,7 +313,7 @@
       document.getElementById("feedback").innerText = "";
       document.getElementById("btn-continue").style.display = "none";
 
-      const percent = ((currentIndex) / currentQuestions.length) * 100;
+      const percent = (currentIndex / currentQuestions.length) * 100;
       document.getElementById("progress-bar").style.width = percent + "%";
 
       const container = document.getElementById("options-container");
@@ -343,13 +339,13 @@
         streak++;
         const points = 100 + (streak * 20);
         score += points;
-        playBeep(587.33, "sine", 0.15); // D5
-        setTimeout(() => playBeep(880, "sine", 0.25), 100); // A5
+        playBeep(587.33, "sine", 0.15);
+        setTimeout(() => playBeep(880, "sine", 0.25), 100);
         document.getElementById("feedback").innerHTML = "<span class="correct-text">✅ Uitstekend! +" + points + " pt</span>";
       } else {
         selectedBtn.classList.add("wrong");
         streak = 0;
-        playBeep(220, "sawtooth", 0.3); // Low Buzz
+        playBeep(220, "sawtooth", 0.25);
         buttons.forEach(b => {
           if (b.innerText === correctText) b.classList.add("correct");
         });
@@ -383,6 +379,12 @@
 
       document.getElementById("performance-text").innerText = evalText;
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("start-btn").onclick = startGame;
+      document.getElementById("btn-continue").onclick = nextQuestion;
+      document.getElementById("restart-btn").onclick = startGame;
+    });
   </script>
 </body>
 </html>
