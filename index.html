@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klassieke Talen – Lesmateriaal & Digibord Tools</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-gold: #f59e0b;
+      --accent-blue: #3b82f6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", -apple-system, system-ui, sans-serif; }
+    body {
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .tag {
+      background: var(--accent-gold);
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+    p { color: var(--text-muted); font-size: 18px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 18px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      border-color: var(--accent-gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    }
+    .card-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .card-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="tag">Klassieke Talen</div>
+      <h1>🏛️ Lesmateriaal & Digibord Hub</h1>
+      <p>Interactieve tools, woordenbattles en overzichten voor Latijn en Grieks.</p>
+    </header>
+
+    <div class="grid">
+      <!-- Card 1: Cicero Woordenbattle -->
+      <a href="cicero-woorden.html" class="card">
+        <div>
+          <div class="card-badge">Klas 5 Latijn • Cicero</div>
+          <div class="card-title">🎮 Woordenbattle: In Catilinam I</div>
+          <div class="card-desc">Interactieve woordentraining voor op het digibord bij het Exordium (§ 1–2 & § 5–6).</div>
+        </div>
+        <div class="card-link">Openen op Digibord ➔</div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
