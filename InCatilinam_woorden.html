@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cicero Woordenbattle – Klas 5 Latijn</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-gold: #f59e0b;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; }
+    body {
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      user-select: none;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 950px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 2px solid #334155;
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      position: relative;
+    }
+    .header-tag {
+      display: inline-block;
+      background: var(--accent-gold);
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background: #0f172a;
+      padding: 14px 24px;
+      border-radius: 14px;
+      margin-bottom: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      border: 1px solid #334155;
+    }
+    .stat-item span { color: var(--accent-gold); }
+    .question-box {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      border: 2px solid var(--accent-gold);
+      border-radius: 18px;
+      padding: 30px 20px;
+      margin-bottom: 30px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .latin-word {
+      font-size: 42px;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: 0.02em;
+    }
+    .context-tag {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .btn-option {
+      background: #1e293b;
+      border: 2px solid #475569;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 600;
+      padding: 20px 24px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .btn-option:hover:not(:disabled) {
+      background: #334155;
+      border-color: var(--accent-gold);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+    .btn-option.correct {
+      background: var(--accent-green) !important;
+      border-color: #059669 !important;
+      color: #fff !important;
+      transform: scale(1.02);
+    }
+    .btn-option.wrong {
+      background: var(--accent-red) !important;
+      border-color: #dc2626 !important;
+      color: #fff !important;
+      opacity: 0.8;
+    }
+    .btn-start, .btn-next {
+      background: var(--accent-blue);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-start:hover, .btn-next:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+    .feedback-message {
+      font-size: 20px;
+      font-weight: 700;
+      min-height: 32px;
+      margin-bottom: 20px;
+    }
+    .correct-text { color: var(--accent-green); }
+    .wrong-text { color: var(--accent-red); }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #0f172a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 24px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent-gold);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .screen { display: none; }
+    .screen.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen active">
+      <div class="header-tag">Klas 5 Gymnasium Latijn</div>
+      <h1>🏛️ Cicero Woordenbattle</h1>
+      <p class="subtitle">Digibord Woordentraining – Exordium (§ 1–2 & § 5–6)</p>
+      
+      <div style="background: #0f172a; border-radius: 16px; padding: 24px; margin: 30px 0; border: 1px solid #334155; text-align: left; line-height: 1.6; font-size: 17px;">
+        <p style="margin-bottom: 10px;">🎯 <b>Instructie voor op het Digibord:</b></p>
+        <ul style="padding-left: 24px; color: #cbd5e1;">
+          <li>Speel klassikaal of in teams (bijv. linkerhelft vs. rechterhelft van het lokaal).</li>
+          <li>Kies het juiste Nederlandse equivalent bij de Latijnse kernwoorden uit Cicero’s eerste redevoering tegen Catilina.</li>
+          <li>Snel en foutloos antwoorden levert bonuspunten en streaks op!</li>
+        </ul>
+      </div>
+
+      <button class="btn-start" onclick="startGame()">Start de Battle ➔</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen">
+      <div class="stats-bar">
+        <div class="stat-item">Vraag: <span id="q-counter">1 / 15</span></div>
+        <div class="stat-item">Score: <span id="score-display">0</span></div>
+        <div class="stat-item">Streak: <span id="streak-display">🔥 0</span></div>
+      </div>
+
+      <div class="question-box">
+        <div class="latin-word" id="latin-target">patientia</div>
+        <div class="context-tag" id="context-tag">§ 1, r. 1</div>
+      </div>
+
+      <div class="options-grid" id="options-container"></div>
+
+      <div class="feedback-message" id="feedback"></div>
+
+      <button id="btn-continue" class="btn-next" style="display: none;" onclick="nextQuestion()">Volgende Woord ➔</button>
+
+      <div class="progress-track">
+        <div id="progress-bar" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="end-screen" class="screen">
+      <div class="header-tag">Resultaat</div>
+      <h1>🏆 Battle Voltooid!</h1>
+      <p class="subtitle">Het Exordium-vocabulaire is scherp beheerst.</p>
+      
+      <div style="background: #0f172a; border-radius: 18px; padding: 30px; margin: 30px auto; max-width: 450px; border: 2px solid var(--accent-gold);">
+        <div style="font-size: 48px; font-weight: 800; color: var(--accent-gold);" id="final-score">0</div>
+        <div style="color: var(--text-muted); font-size: 18px; margin-top: 6px;">Totaal behaalde punten</div>
+        <div style="font-size: 20px; font-weight: 700; margin-top: 16px;" id="performance-text">Uitstekend!</div>
+      </div>
+
+      <button class="btn-start" onclick="startGame()">Opnieuw Spelen 🔄</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Audio Context for Digibord feedback sound effects
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq, type, duration) {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    const vocabData = [
+      { latin: "patientia", context: "§ 1, r. 1 (Quo usque tandem abutere...)", correct: "geduld", wrong: ["woede", "brutaliteit", "lijden"] },
+      { latin: "furor, furoris (m.)", context: "§ 1, r. 2 (furor iste tuus)", correct: "razernij / woede", wrong: ["dapperheid", "trots", "wapens"] },
+      { latin: "audacia", context: "§ 1, r. 2 (effrenata iactabit audacia)", correct: "overmoed / brutaliteit", wrong: ["angst", "voorzichtigheid", "eergevoel"] },
+      { latin: "praesidium", context: "§ 1, r. 3 (nocturnum praesidium)", correct: "bescherming / wachtpost", wrong: ["legerkamp", "overwinning", "vergadering"] },
+      { latin: "vigiliae (v. mv.)", context: "§ 1, r. 3 (urbis vigiliae)", correct: "nachtwachten", wrong: ["muren", "straten", "wapensmeden"] },
+      { latin: "timor, timoris (m.)", context: "§ 1, r. 3 (timor populi)", correct: "angst / vrees", wrong: ["blijdschap", "trots", "lawaai"] },
+      { latin: "concursus, -us (m.)", context: "§ 1, r. 4 (concursus bonorum)", correct: "samenloop / toeloop", wrong: ["vlucht", "uitverkoop", "vergissing"] },
+      { latin: "munitus (superlativus)", context: "§ 1, r. 4 (munitissimus locus)", correct: "zeer zwaar versterkt / bewaakt", wrong: ["zeer heilig", "zeer afgelegen", "zeer smal"] },
+      { latin: "coniuratio, -onis (v.)", context: "§ 1, r. 6 (coniurationem tuam)", correct: "samenzwering", wrong: ["overwinning", "redevoering", "vriendschap"] },
+      { latin: "arbitror, arbitrari", context: "§ 1, r. 8 (ignorare arbitraris)", correct: "menen / denken", wrong: ["eisen", "weigeren", "bevelen"] },
+      { latin: "mores (m. mv.)", context: "§ 2, r. 9 (O tempora, o mores!)", correct: "normen en waarden / zeden", wrong: ["doden", "wetten", "gebouwen"] },
+      { latin: "particeps (+ gen.)", context: "§ 2, r. 10 (publici consilii particeps)", correct: "deelgenoot (aan)", wrong: ["leider (van)", "tegenstander (van)", "verrader (van)"] },
+      { latin: "caedes, caedis (v.)", context: "§ 2, r. 11 (ad caedem)", correct: "moord / bloedbad", wrong: ["graf", "gevangenis", "verbanning"] },
+      { latin: "castra (o. mv.)", context: "§ 5, r. 15 (Castra sunt in Italia)", correct: "legerkamp", wrong: ["burcht", "schepen", "tenten"] },
+      { latin: "hostis, hostis (m.)", context: "§ 5, r. 16 (hostium numerus)", correct: "vijand (staatsvijand)", wrong: ["burger", "bondgenoot", "soldaat"] },
+      { latin: "moenia (o. mv.)", context: "§ 5, r. 17 (intra moenia)", correct: "stadsmuren", wrong: ["tempels", "paleizen", "poorten"] },
+      { latin: "pernicies, -ei (v.)", context: "§ 5, r. 18 (perniciem rei publicae)", correct: "ondergang / verderf", wrong: ["welvaart", "vrijheid", "geschiedenis"] }
+    ];
+
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let streak = 0;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function startGame() {
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      currentQuestions = shuffle([...vocabData]).slice(0, 15);
+      currentIndex = 0;
+      score = 0;
+      streak = 0;
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("game-screen").classList.add("active");
+
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = currentQuestions[currentIndex];
+      document.getElementById("q-counter").innerText = (currentIndex + 1) + " / " + currentQuestions.length;
+      document.getElementById("score-display").innerText = score;
+      document.getElementById("streak-display").innerText = "🔥 " + streak;
+      document.getElementById("latin-target").innerText = q.latin;
+      document.getElementById("context-tag").innerText = q.context;
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("btn-continue").style.display = "none";
+
+      const percent = ((currentIndex) / currentQuestions.length) * 100;
+      document.getElementById("progress-bar").style.width = percent + "%";
+
+      const container = document.getElementById("options-container");
+      container.innerHTML = "";
+
+      const allOptions = shuffle([q.correct, ...q.wrong]);
+
+      allOptions.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "btn-option";
+        btn.innerText = opt;
+        btn.onclick = () => selectOption(btn, opt, q.correct);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedText, correctText) {
+      const buttons = document.querySelectorAll(".btn-option");
+      buttons.forEach(b => b.disabled = true);
+
+      if (selectedText === correctText) {
+        selectedBtn.classList.add("correct");
+        streak++;
+        const points = 100 + (streak * 20);
+        score += points;
+        playBeep(587.33, "sine", 0.15); // D5
+        setTimeout(() => playBeep(880, "sine", 0.25), 100); // A5
+        document.getElementById("feedback").innerHTML = "<span class="correct-text">✅ Uitstekend! +" + points + " pt</span>";
+      } else {
+        selectedBtn.classList.add("wrong");
+        streak = 0;
+        playBeep(220, "sawtooth", 0.3); // Low Buzz
+        buttons.forEach(b => {
+          if (b.innerText === correctText) b.classList.add("correct");
+        });
+        document.getElementById("feedback").innerHTML = "<span class="wrong-text">❌ Juiste betekenis: <b>" + correctText + "</b></span>";
+      }
+
+      document.getElementById("score-display").innerText = score;
+      document.getElementById("streak-display").innerText = "🔥 " + streak;
+      document.getElementById("btn-continue").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        showQuestion();
+      } else {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      document.getElementById("progress-bar").style.width = "100%";
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("end-screen").classList.add("active");
+      document.getElementById("final-score").innerText = score + " pt";
+
+      let evalText = "Goed gewerkt!";
+      if (score >= 2000) evalText = "👑 Imperator / Consul-niveau! Foutloze beheersing!";
+      else if (score >= 1400) evalText = "🏛️ Senator-niveau! Zeer sterke woordkennis.";
+      else evalText = "📖 Blijf herhalen voor de toets.";
+
+      document.getElementById("performance-text").innerText = evalText;
+    }
+  </script>
+</body>
+</html>
